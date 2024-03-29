@@ -7,6 +7,7 @@ int main (void) {
     Vector2 w = { factor*16, factor*9 };
     State state = Menu;
     std::string title = "Retro Heroes";
+    InitWindow (w.x, w.y, title.c_str());
     Game *game = new Game(w, state, title);
     RH::loop(game);
     return 0;
