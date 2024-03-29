@@ -1,0 +1,10 @@
+#!/bin/sh -xe
+source "/home/andrew/git/emsdk/emsdk_env.sh"
+CC="emcc"
+CFLAGS="-Os -Wall ./raylib/libraylib.a -I. -I./include"
+LIBS="-L. -L./raylib -s USE_GLFW=3"
+PAGE="--shell-file shell.html"
+PLATFORM="PLATFORM_WEB"
+[[ ! -d ../build ]] && mkdir ../build
+#emcc -o index.html main.cpp -Os -Wall ./raylib/libraylib.a -I. -L. -L./raylib -s USE_GLFW=3 --shell-file shell.html -DPLATFORM_WEB
+clear && $CC -o ../build/index.html main.cpp game.cpp $CFLAGS $LIBS $PAGE -D$PLATFORM
