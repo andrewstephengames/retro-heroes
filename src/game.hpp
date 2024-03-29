@@ -17,6 +17,8 @@ enum State {
     Paused,
 };
 
+typedef void (*em_callback_func)(void);
+
 class Game {
 private:
     Vector2 w;
