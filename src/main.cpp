@@ -32,6 +32,10 @@ void RH::loop(Game *game) {
 }
 
 void RH::drawFrame(void) {
+    Vector2 resize;
+    resize.x = GetScreenWidth();
+    resize.y = GetScreenHeight();
+    game->setWindow(resize);
     BeginDrawing();
         ClearBackground (SKYBLUE);
         game->stateMachine();
