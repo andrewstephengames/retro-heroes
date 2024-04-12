@@ -1,34 +1,20 @@
 #include "game.hpp"
 
-Rectangle RH::Vector2Rec (Vector2 w) {
-    return (Rectangle) {
-        .x = 0,
-        .y = 0,
-        .width = w.x,
-        .height = w.y,
-    };
-}
-
-void RH::loop(Game *game) {
-#if defined (PLATFORM_WEB)
-    emscripten_set_main_loop (RH::drawFrame(game), 0, 1);
-#else
-    SetTargetFPS(60);
-    while (!WindowShouldClose()) {
-        RH::drawFrame(game);
-    }
-#endif
-    CloseWindow();
-}
-
 Game::Game(Vector2 w, State state, std::string title) {
     this->w = w;
     this->state = state;
     this->title = title;
+    wr = {
+        0,
+        0,
+        this->w.x,
+        this->w.y,
+    };
+    InitWindow (this->w.x, this->w.y, this->title.c_str());
 }
 
 Game::~Game() {
-    TraceLog (LOG_INFO, "Game exited graciously.");   
+    CloseWindow();
 }
 
 State Game::getState() {
@@ -48,36 +34,25 @@ void Game::setWindow(Vector2 w) {
 }
 
 void Game::stateMachine() {
-    Rectangle rec = RH::Vector2Rec (w);
+    #ifdef MOUSE_DEBUG
+        char buf[500];
+        sprintf (buf, "%.0f %.0f", GetMousePosition().x, GetMousePosition().y);
+        DrawText (buf, 0, 0, w.x/30, BLACK);
+    #endif // MOUSE_DEBUG
+    if (IsKeyPressed (KEY_Q))
+        exit (EXIT_SUCCESS);
     switch (state) {
         case Menu: {
-            DrawRectangleRec (rec, LIGHTGRAY);
-            if (IsKeyPressed (KEY_Q) || IsMouseButtonPressed (MOUSE_BUTTON_RIGHT))
-                exit (EXIT_SUCCESS);
-            if (IsKeyPressed (KEY_ENTER) || IsMouseButtonPressed (MOUSE_BUTTON_LEFT))
-                state = Start;
+            //drawMenu();
         } break;
         case Start: {
-            DrawRectangleRec (rec, LIME);
-            if (IsKeyPressed (KEY_Q) || IsMouseButtonPressed (MOUSE_BUTTON_RIGHT))
-                state = Menu;
-            if (IsKeyPressed (KEY_ENTER) || IsMouseButtonPressed (MOUSE_BUTTON_LEFT))
-                state = Paused;
+            //drawGame();
         } break;
         case Paused: {
-            DrawRectangleRec (rec, YELLOW);
-            if (IsKeyPressed (KEY_ENTER) || IsMouseButtonPressed (MOUSE_BUTTON_LEFT))
-                state = Start;
+            //drawPaused();
         } break;
         default:
             TraceLog (LOG_ERROR, "Unreachable state.");
             exit (EXIT_FAILURE);
     }
-}
-
-em_callback_func RH::drawFrame(Game *game) {
-    BeginDrawing();
-        ClearBackground (BLACK);
-        game->stateMachine();
-    EndDrawing();
 }

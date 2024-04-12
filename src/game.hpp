@@ -7,7 +7,7 @@
 #include <iostream>
 #include <string>
 
-#if defined (PLATFORM_WEB)
+#ifdef PLATFORM_WEB
     #include <emscripten/emscripten.h>
 #endif
 
@@ -17,11 +17,10 @@ enum State {
     Paused,
 };
 
-typedef void (*em_callback_func)(void);
-
 class Game {
 private:
     Vector2 w;
+    Rectangle wr;
     std::string title;
     State state;
 public:
@@ -32,15 +31,10 @@ public:
     void setState(State state);
     Vector2 getWindow();
     void setWindow(Vector2 w);
+    void drawMenu();
+    void drawGame();
+    void drawPaused();
     void stateMachine();
-};
-
-namespace RH {
-    Rectangle Vector2Rec (Vector2 w);
-    em_callback_func drawFrame(Game *game); // we need to draw frames
-                                // in a separate function
-                                // due to the limitations of web
-    void loop(Game *game);
 };
 
 #endif // GAME_HPP_
