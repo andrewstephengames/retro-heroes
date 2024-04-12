@@ -11,14 +11,14 @@ LIBS="-lraylib"
 echo "###############################"
 echo "Linux"
 echo "###############################"
-$CC $CFLAGS -o ../build/retro-heroes main.cpp game.cpp $LIBS -D$PLATFORM -DMOUSE_DEBUG # linux
+$CC $CFLAGS -o ../build/retro-heroes main.cpp game.cpp $LIBS -D$PLATFORM #-DMOUSE_DEBUG # linux
 CC="x86_64-w64-mingw32-g++ -pipe"
 CFLAGS="-Os -w -I/usr/x86_64-w64-mingw32/include -I. -I./include -static-libgcc -static-libstdc++ -static -ggdb"
 LIBS="-L. -L./lib -lraylib -lopengl32 -lgdi32 -lwinmm"
 echo "###############################"
 echo "Windows"
 echo "###############################"
-$CC $CFLAGS -o ../build/retro-heroes.exe main.cpp game.cpp $LIBS -D$PLATFORM -DMOUSE_DEBUG # windows
+$CC $CFLAGS -o ../build/retro-heroes.exe main.cpp game.cpp $LIBS -D$PLATFORM #-DMOUSE_DEBUG # windows
 PLATFORM="PLATFORM_WEB"
 CC="em++ -pipe"
 CFLAGS="-Os -w ./ray/libraylib.a -I. -I./include -ggdb"
@@ -27,4 +27,4 @@ PAGE="--shell-file shell.html"
 echo "###############################"
 echo "Web"
 echo "###############################"
-$CC -o ../build/index.html main.cpp game.cpp $CFLAGS $LIBS $PAGE -D$PLATFORM -DMOUSE_DEBUG # web
+$CC -o ../build/index.html main.cpp game.cpp $CFLAGS $LIBS $PAGE -D$PLATFORM #-DMOUSE_DEBUG # web
