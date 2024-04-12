@@ -2,7 +2,6 @@
 #define GAME_HPP_
 
 #include <raylib.h>
-#include <raygui.h>
 #include <stdlib.h>
 #include <iostream>
 #include <string>
@@ -15,6 +14,18 @@ enum State {
     Menu,
     Start,
     Paused,
+};
+
+struct Button {
+    Rectangle box;
+    Color fg;
+    Color bg;
+    std::string label;
+    int size;
+    void print () {
+        printf ("box: { %0.f, %0.f, %0.f, %0.f }\nfg: #%x, bg: #%x\nlabel: %s, size: %d\n",
+                box.x, box.y, box.width, box.height, ColorToInt(fg), ColorToInt(bg), label.c_str(), size);
+    }
 };
 
 class Game {

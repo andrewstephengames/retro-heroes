@@ -31,6 +31,73 @@ Vector2 Game::getWindow() {
 
 void Game::setWindow(Vector2 w) {
     this->w = w;
+    wr = {
+        0,
+        0,
+        this->w.x,
+        this->w.y,
+    };
+}
+
+void Game::drawMenu() {
+    Button titleB, play;
+    titleB.box = wr;
+    titleB.size = wr.width/10;
+    titleB.box.x = wr.width/2;
+    titleB.box.y = wr.height/4;
+    titleB.label = title;
+    titleB.box.width = MeasureText (titleB.label.c_str(), titleB.size);
+    titleB.box.height = titleB.size;
+    titleB.box.x -= titleB.box.width/2;
+    titleB.box.y -= titleB.box.height/2;
+    titleB.bg = BLACK;
+    titleB.fg = DARKGRAY;
+    DrawText (titleB.label.c_str(), titleB.box.x, titleB.box.y, titleB.size, titleB.fg);
+    play.box = wr;
+    play.size = wr.width/20;
+    play.box.x = wr.width/2;
+    play.box.y = wr.height/1.66;
+    play.label = "Play";
+    play.box.width = MeasureText (play.label.c_str(), play.size);
+    play.box.height = play.size;
+    play.box.x -= play.box.width/2;
+    play.box.y -= play.box.height/2;
+    play.bg = BLACK;
+    play.bg.a = 100;
+    play.fg = WHITE;
+    if (CheckCollisionPointRec (GetMousePosition(), play.box)) {
+        play.bg = BLACK;
+        if (IsMouseButtonPressed (MOUSE_BUTTON_LEFT))
+            state = Start;
+    }
+    DrawRectangleRec (play.box, play.bg);
+    DrawText (play.label.c_str(), play.box.x, play.box.y, play.size, play.fg);
+}
+
+void Game::drawGame() {
+    DrawText ("Work in progress", 32, 32, w.x/10, RED);
+    Button back;
+    back.box.x = 32;
+    back.box.y = 250;
+    back.label = "Back to Menu";
+    back.size = w.x/20;
+    back.box.width = MeasureText (back.label.c_str(), back.size);
+    back.box.height = back.size;
+    back.bg = BLACK;
+    back.bg.a = 100;
+    back.fg = WHITE;
+    if (CheckCollisionPointRec (GetMousePosition(), back.box)) {
+        back.bg = BLACK;
+        if (IsMouseButtonPressed (MOUSE_BUTTON_LEFT))
+            state = Menu;
+    }
+    DrawRectangleRec (back.box, back.bg);
+    DrawText (back.label.c_str(), back.box.x, back.box.y, back.size, back.fg);
+    if (IsKeyPressed(KEY_H))
+        state = Menu;
+}
+
+void Game::drawPaused() {
 }
 
 void Game::stateMachine() {
@@ -43,13 +110,13 @@ void Game::stateMachine() {
         exit (EXIT_SUCCESS);
     switch (state) {
         case Menu: {
-            //drawMenu();
+            drawMenu();
         } break;
         case Start: {
-            //drawGame();
+            drawGame();
         } break;
         case Paused: {
-            //drawPaused();
+            drawPaused();
         } break;
         default:
             TraceLog (LOG_ERROR, "Unreachable state.");
