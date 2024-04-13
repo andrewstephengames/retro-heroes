@@ -9,7 +9,7 @@ namespace RH {
 
 int main (void) {
     SetConfigFlags (FLAG_WINDOW_RESIZABLE);
-    //SetTraceLogLevel (LOG_ERROR);
+    SetTraceLogLevel (LOG_ERROR);
     float factor = 120;
     Vector2 w = { factor*16, factor*9 };
     State state = Menu;
