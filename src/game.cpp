@@ -11,6 +11,7 @@ Game::Game(Vector2 w, State state, std::string title) {
         this->w.y,
     };
     InitWindow (this->w.x, this->w.y, this->title.c_str());
+    SetRandomSeed(clock());
 }
 
 Game::~Game() {
@@ -75,7 +76,8 @@ void Game::drawMenu() {
 }
 
 void Game::drawGame() {
-    DrawText ("Work in progress", 32, 32, w.x/10, RED);
+    DrawText ("Work in progress", 32, 32, w.x/20, RED);
+    Vector2 mouse = GetMousePosition();
     Button back;
     back.box.x = 32;
     back.box.y = 250;
@@ -86,7 +88,7 @@ void Game::drawGame() {
     back.bg = BLACK;
     back.bg.a = 100;
     back.fg = WHITE;
-    if (CheckCollisionPointRec (GetMousePosition(), back.box)) {
+    if (CheckCollisionPointRec (mouse, back.box)) {
         back.bg = BLACK;
         if (IsMouseButtonPressed (MOUSE_BUTTON_LEFT))
             state = Menu;
@@ -95,6 +97,40 @@ void Game::drawGame() {
     DrawText (back.label.c_str(), back.box.x, back.box.y, back.size, back.fg);
     if (IsKeyPressed(KEY_H))
         state = Menu;
+    Button attack, shield, special;
+    float scale = 30;
+    attack.box.x = w.x/scale;
+    attack.box.y = wr.height - 2*w.x/scale;
+    attack.box.width = w.x/scale;
+    attack.box.height = w.x/scale;
+    attack.bg = RED;
+    shield.box = attack.box;
+    shield.box.x += 2*w.x/scale;
+    shield.bg = ORANGE;
+    special.box = shield.box;
+    special.box.x += 2*w.x/scale;
+    special.bg = PURPLE;
+    if (CheckCollisionPointRec (mouse, attack.box)) {
+        attack.bg.a = 100;
+        if (IsMouseButtonPressed (MOUSE_BUTTON_LEFT)) {
+            printf("Attack\n");
+        }
+    }
+    if (CheckCollisionPointRec (mouse, shield.box)) {
+        shield.bg.a = 100;
+        if (IsMouseButtonPressed (MOUSE_BUTTON_LEFT)) {
+            printf("Shield\n");
+        }
+    }
+    if (CheckCollisionPointRec (mouse, special.box)) {
+        special.bg.a = 100;
+        if (IsMouseButtonPressed (MOUSE_BUTTON_LEFT)) {
+            printf("Special attack\n");
+        }
+    }
+    DrawRectangleRec (attack.box, attack.bg);
+    DrawRectangleRec (shield.box, shield.bg);
+    DrawRectangleRec (special.box, special.bg);
 }
 
 void Game::drawPaused() {
