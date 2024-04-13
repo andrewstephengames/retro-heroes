@@ -3,8 +3,10 @@
 
 #include <raylib.h>
 #include <stdlib.h>
+#include <time.h>
 #include <iostream>
 #include <string>
+#include <queue>
 
 #ifdef PLATFORM_WEB
     #include <emscripten/emscripten.h>
