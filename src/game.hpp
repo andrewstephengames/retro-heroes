@@ -48,7 +48,9 @@ private:
     State state;
     Resources res;
     std::string mode;
+    bool turn;
 public:
+    Game();
     Game(Vector2 w, State state, std::string title);
     // call: Game ({1920, 1080}, Menu, "Retro Heroes");
     ~Game();
@@ -59,6 +61,8 @@ public:
     Resources getRes();
     void setMode(std::string mode);
     std::string getMode();
+    void setTurn();
+    bool getTurn();
     void drawMenu();
     void drawGame();
     void drawPaused();

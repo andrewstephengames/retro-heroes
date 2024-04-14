@@ -1,6 +1,6 @@
 #include "player.hpp"
 
-Player(std::string name, Color color, int health, Vector2 pos, Rectangle box) {
+Player::Player(std::string name, Color color, int health) {
     this->name = name;
     this->color = color;
     this->health = health;
@@ -8,50 +8,52 @@ Player(std::string name, Color color, int health, Vector2 pos, Rectangle box) {
     this->box = box;
 }
 
-std::string getName() {
+std::string Player::getName() {
     return name;
 }
 
-void setName (std::string name) {
+void Player::setName (std::string name) {
     this->name = name;
 }
 
-Color getColor() {
+Color Player::getColor() {
     return color;
 }
 
-void setColor(Color color) {
+void Player::setColor(Color color) {
     this->color = color;
 }
 
-int getHealth() {
+int Player::getHealth() {
     return health;
 }
 
-void setHealth(int health) {
+void Player::setHealth(int health) {
     this->health = health;
 }
 
-Vector2 getPos() {
+Vector2 Player::getPos() {
     return pos;
 }
 
-void setPos(Vector2 pos) {
+void Player::setPos(Vector2 pos) {
     this->pos = pos;
 }
 
-Rectangle getBox() {
+Rectangle Player::getBox() {
     return box;
 }
 
-void setBox(Rectangle box) {
+void Player::setBox(Rectangle box) {
     this->box = box;
 }
 
-void addMove(Move move) {
+void Player::addMove(Move move) {
     this->move.push(move);
 }
 
-Move useMove() {
-    return move.pop();
+Move Player::useMove () {
+    Move lastMove = move.front();
+    move.pop();
+    return lastMove;
 }

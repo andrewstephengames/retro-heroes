@@ -13,7 +13,7 @@ private:
     Rectangle box;
     std::queue<Move> move;
 public:
-    Player(std::string name, Color color, int health, Vector2 pos, Rectangle box);
+    Player(std::string name, Color color, int health);
     std::string getName();
     void setName (std::string name);
     Color getColor();
@@ -26,7 +26,6 @@ public:
     void setBox(Rectangle box);
     void addMove(Move move);
     Move useMove ();
-    friend void drawMove(Player p1, Player p2);
 };
 
 #endif // PLAYER_HPP_
