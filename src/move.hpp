@@ -1,7 +1,7 @@
 #ifndef MOVE_HPP_
 #define MOVE_HPP_
 
-#include "player.hpp"
+#include "game.hpp"
 
 class Move {
 private:
@@ -16,7 +16,6 @@ public:
     void setColor(Color color);
     Sound getSound();
     void setSound(Sound sound);
-    void drawMove(Player p1, Player p2);
-}
+};
 
 #endif // MOVE_HPP_
