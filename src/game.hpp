@@ -16,6 +16,8 @@ enum State {
     Menu,
     Start,
     Paused,
+    Options,
+    About,
 };
 
 struct Button {
@@ -30,12 +32,22 @@ struct Button {
     }
 };
 
+struct Resources {
+    Texture2D titleT, attackT, shieldT, healT, specialT;
+    Music gameMusic;
+    Sound menuHover, menuClick, attackS, shieldS, healS, specialS;
+};
+
+Vector2 Rec2Vec (Rectangle rec);
+
 class Game {
 private:
     Vector2 w;
     Rectangle wr;
     std::string title;
     State state;
+    Resources res;
+    std::string mode;
 public:
     Game(Vector2 w, State state, std::string title);
     // call: Game ({1920, 1080}, Menu, "Retro Heroes");
@@ -44,9 +56,14 @@ public:
     void setState(State state);
     Vector2 getWindow();
     void setWindow(Vector2 w);
+    Resources getRes();
+    void setMode(std::string mode);
+    std::string getMode();
     void drawMenu();
     void drawGame();
     void drawPaused();
+    void drawOptions();
+    void drawAbout();
     void stateMachine();
 };
 
