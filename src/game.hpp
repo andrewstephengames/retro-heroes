@@ -3,6 +3,7 @@
 
 #include <raylib.h>
 #include <stdlib.h>
+#include <string.h>
 #include <time.h>
 #include <iostream>
 #include <string>
@@ -12,9 +13,23 @@
     #include <emscripten/emscripten.h>
 #endif
 
+#define MAX_TITLE_SIZE 1024
+#define MAX_INPUT_SIZE 1024
+
+typedef struct {
+     Rectangle box;
+     char label[MAX_INPUT_SIZE];
+     int label_len;
+     size_t font_size;
+     Color bg;
+     Color fg;
+     Texture2D texture;
+} Element;
+
 enum State {
     Menu,
     Start,
+    Win,
     Paused,
     Options,
     About,
@@ -33,12 +48,13 @@ struct Button {
 };
 
 struct Resources {
-    Texture2D titleT, attackT, shieldT, healT, specialT;
     Music gameMusic;
     Sound menuHover, menuClick, attackS, shieldS, healS, specialS;
+    Font titleF;
 };
 
 Vector2 Rec2Vec (Rectangle rec);
+void drawInput(Element *e, bool texture, bool center, Vector2 canvas);
 
 class Game {
 private:
@@ -50,6 +66,9 @@ private:
     std::string mode;
     bool turn;
 public:
+//    int rc;
+//    sqlite3 *db;
+//    char *sql, *err;
     Game();
     Game(Vector2 w, State state, std::string title);
     // call: Game ({1920, 1080}, Menu, "Retro Heroes");
@@ -70,5 +89,7 @@ public:
     void drawAbout();
     void stateMachine();
 };
+
+bool drawWin (Game *game);
 
 #endif // GAME_HPP_

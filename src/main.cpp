@@ -9,12 +9,14 @@ namespace RH {
 
 int main (void) {
     SetConfigFlags (FLAG_WINDOW_RESIZABLE);
+    SetConfigFlags (FLAG_MSAA_4X_HINT);
     //SetTraceLogLevel (LOG_ERROR);
     float factor = 120;
     Vector2 w = { factor*16, factor*9 };
     State state = Menu;
     std::string title = "Retro Heroes";
     game = new Game(w, state, title);
+    PlayMusicStream(game->getRes().gameMusic);
     RH::loop(game);
     delete game;
     return 0;
@@ -26,6 +28,7 @@ void RH::loop(Game *game) {
 #else
     SetTargetFPS(60);
     while (!WindowShouldClose()) {
+        UpdateMusicStream (game->getRes().gameMusic);
         drawFrame();
     }
 #endif
