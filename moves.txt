@@ -1,0 +1,53 @@
+
+Here will be 2 types:
+
+1) Normal:
+
+-the majority of moves are here, with different SP, you can change them if you want, as SP goes
+
+-fr0m here each player will choose 3 moves
+
+-for monster, idk, we can either make it choose randomly 3 moves, or give him the moves ourselves, like a basic NPC
+
+2)Ultimates
+
+-those are strong moves, that will go in the final election of moves
+
+-only one move of this type!!!
+
+->Now time for the Sp for each move:
+
+
+->Normal:
+
+-Slash: 15
+
+-Heal: 15
+
+-Shiled: 15
+
+-Confusion: 20
+
+-Buff Strength: 10
+
+-Mega Heal: 5
+
+-Fog: 20
+
+
+->Ultimates:
+
+-Mega Slash: 5
+
+-Leech: 5
+
+-Fire Ball: 5
+
+
+Notes:
+
+-I can do it only for my main simulation, but those things are to be done in the code with the Raylib:
+
+->After a turn since it was activated, shield will automatically go down(hold it for just one turn)
+
+->If a player is set on fire, he will permanently stay like that till the end of the game(look in the game comments to see how the move works)

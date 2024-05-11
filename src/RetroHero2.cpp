@@ -2,31 +2,12 @@
 #include <cstdlib>
 using namespace std;
 
-class Moves
-{
-private:
-    int sp;
-
-public:
-    Moves() {}
-
-    int getSp()
-    {
-        return sp;
-    }
-
-    void setSp(int newSp)
-    {
-        this->sp = newSp;
-    }
-};
-
 class Player
 {
 private:
     int health;
     int attack;
-    bool deff, confusion, fog;
+    bool deff, confusion, fog, onFire;
 
 public:
     Player()
@@ -36,6 +17,7 @@ public:
         this->deff = false;
         this->confusion = false;
         this->fog = false;
+        this->onFire = false;
     }
 
     int getHealth()
@@ -63,6 +45,14 @@ public:
         return fog;
     }
 
+    bool getOnFire(){
+        return onFire;
+    }
+
+    bool setOnFire(bool newOnFire){
+        this->onFire = newOnFire;
+    }
+
     void setDeff(bool newDeff)
     {
         this->deff = newDeff;
@@ -86,103 +76,12 @@ public:
     void setAttack(int newAttack)
     {
         this->attack = newAttack;
-    }
-};
-
-class Monster
-{
-private:
-    int health;
-    int attack;
-    bool deff, confusion, fog;
-
-public:
-    Monster()
-    {
-        this->attack = 10;
-        this->health = 100;
-        this->deff = false;
-        this->confusion = false;
-        this->fog = false;
-    }
-
-    void setAttack(int newAttack)
-    {
-        this->attack = newAttack;
-    }
-
-    int getAttack()
-    {
-        return attack;
-    }
-
-    void setHealth(int newHealth)
-    {
-        this->health = newHealth;
-    }
-
-    int getHealth()
-    {
-        return health;
-    }
-
-    bool getDeff()
-    {
-        return deff;
-    }
-
-    void setDeff(bool newDeff)
-    {
-        this->deff = newDeff;
-    }
-
-    void setConfusion(bool newConfusion)
-    {
-        this->confusion = newConfusion;
-    }
-
-    void setFog(bool newFog)
-    {
-        this->fog = newFog;
-    }
-
-    bool getConfusion()
-    {
-        return confusion;
-    }
-
-    bool getFog()
-    {
-        return fog;
     }
 };
 
 // moves:
 
-void basicAttackMonster(Player p, Monster m)
-{
-    if(m.getConfusion() == true){
-        m.setHealth(m.getHealth() - m.getAttack());
-        m.setConfusion(false);
-    }
-
-    if(m.getConfusion() == true){
-        cout << "Mosnter missed because of the fog";
-        m.setFog(false);
-    }
-
-    if (p.getDeff() != true)
-    {
-        p.setHealth(p.getHealth() - m.getAttack());
-    }
-    else
-    {
-        cout << "Enemy has deffence on" << endl;
-        p.setDeff(false);
-    }
-}
-
-void basicAttackPlayerVsPlayer(Player p1, Player p2)
+void slash(Player &p1, Player &p2)
 {
     if(p2.getConfusion() == true){
         p2.setHealth(p2.getHealth() - p2.getAttack());
@@ -205,30 +104,7 @@ void basicAttackPlayerVsPlayer(Player p1, Player p2)
     }
 }
 
-void basicAttackPlayerVsMonster(Monster m, Player p)
-{
-    if(p.getConfusion() == true){
-        p.setHealth(p.getHealth() - p.getAttack());
-        p.setConfusion(false);
-    }
-
-    if(p.getFog() == true){
-        cout << "Player can't because of the fog, hit missed";
-        p.setFog(false);
-    }
-    
-    if (m.getDeff() != true)
-    {
-        m.setHealth(m.getHealth() - p.getAttack());
-    }
-    else
-    {
-        cout << "Monster tanked the hit" << endl;
-        m.setDeff(false);
-    }
-}
-
-void healPlayer(Player p)
+void heal(Player &p)
 {
     if (p.getHealth() < 100)
     {
@@ -240,42 +116,12 @@ void healPlayer(Player p)
     }
 }
 
-void healMonster(Monster m)
-{
-    if (m.getHealth() < 100)
-    {
-        m.setHealth(m.getHealth() + 10);
-    }
-    if (m.getHealth() > 100)
-    {
-        m.setHealth(100);
-    }
-}
-
-void shieldPlayer(Player p)
+void shield(Player &p)
 {
     p.setDeff(true);
 }
 
-void shieldMonster(Monster m)
-{
-    m.setDeff(true);
-}
-
-void specialAttackMonster(Player p, Monster m)
-{
-    //can break shield and fog, not confusion
-    if(m.getConfusion() == false){
-        p.setHealth(p.getHealth() - 2 * m.getAttack());
-        p.setDeff(false);
-    }
-    else{
-        m.setHealth(m.getHealth() - 2 * m.getAttack());
-        m.setConfusion(false);
-    }
-}
-
-void specialAttackPlayerVsPlayer(Player p1, Player p2)
+void MegaSlash(Player &p1, Player &p2)
 {
     //can break shield and fog, not confusion
     if(p2.getConfusion() == false){
@@ -288,37 +134,18 @@ void specialAttackPlayerVsPlayer(Player p1, Player p2)
     }
 }
 
-void specialAttackPlayerVsMonster(Monster m, Player p)
-{
-    //can break shield and fog, not confusion
-    if(p.getConfusion() == false){
-        m.setHealth(m.getHealth() - 2 * p.getAttack());
-        m.setDeff(false);
-    }
-    else{
-        p.setHealth(p.getHealth() - 2 * p.getAttack());
-        p.setConfusion(false);
-    }
-}
-
-void buffStrengthPlayer(Player p)
+void buffStrength(Player &p)
 {
     // buff by 20%, might reduce it
     p.setAttack(p.getAttack() + ((p.getAttack() * 20) / 100));
 }
 
-void buffStrengthMonster(Monster m)
-{
-    // buff by 20%, might reduce it
-    m.setAttack(m.getAttack() + ((m.getAttack() * 20) / 100));
-}
-
-void megaHealPlayer(Player p)
+void megaHeal(Player &p)
 {
     // i m thinking of implementing this for a mage support class
     if (p.getHealth() < 100)
     {
-        p.setHealth(p.getHealth() + 30);
+        p.setHealth(p.getHealth() + 25);
     }
     if (p.getHealth() > 100)
     {
@@ -326,20 +153,7 @@ void megaHealPlayer(Player p)
     }
 }
 
-void megaHealMonster(Monster m)
-{
-    // i m thinking of implementing this for a mage support class
-    if (m.getHealth() < 100)
-    {
-        m.setHealth(m.getHealth() + 30);
-    }
-    if (m.getHealth() > 100)
-    {
-        m.setHealth(100);
-    }
-}
-
-void fogMonsterOrPlayerVsPlayer(Player p)
+void fog(Player &p)
 {
     // i m thinking with this to make it such that the entity attacked has a 50% chance to miss
     // use random nr generator
@@ -357,25 +171,7 @@ void fogMonsterOrPlayerVsPlayer(Player p)
     else cout << "Attack failed" << endl;
 }
 
-void fogPlayerVsMonster(Monster m)
-{
-    // i m thinking with this to make it such that the entity attacked has a 50% chance to miss
-    // use random nr generator
-    // make it as an effect, calculate here and make it be effective(true) or noneffective(false)
-    int decision;
-
-    srand((unsigned)time(NULL));
-    decision = 1 + (rand() % 10);
-
-    if(decision % 2 == 0){
-        //effect applied
-        cout << "Attack was succesful!" << endl; 
-        m.setFog(true);
-    }
-    else cout << "Attack failed" << endl;
-}
-
-void confusionMonsterOrPlayerVsPlayer(Player p)
+void confusion(Player &p)
 {
     // i m thinking of making this as a move to make the entity hit with it hit himself next round
     // have to implement it as an effect, like shield
@@ -392,72 +188,10 @@ void confusionMonsterOrPlayerVsPlayer(Player p)
     else cout << "Attack failed" << endl;
 }
 
-void confusionPlayerVsMonster(Monster m)
-{
-    // i m thinking of making this as a move to make the entity hit with it hit himself next round
-    // have to implement it as an effect, like shield
-    int decision;
-
-    srand((unsigned)time(NULL));
-    decision = 1 + (rand() % 10);
-
-    if(decision % 2 == 0){
-        //effect applied
-        cout << "Attack was succesful!" << endl; 
-        m.setConfusion(true);
-    }
-    else cout << "Attack failed" << endl;
-}
-
-void healAllyMonster(Monster m)
-{
-    if (m.getHealth() < 100)
-    {
-        m.setHealth(m.getHealth() + 20);
-    }
-    if (m.getHealth() > 100)
-    {
-        m.setHealth(100);
-    }
-}
-
-void healAllyPlayer(Player p)
-{
-    if (p.getHealth() < 100)
-    {
-        p.setHealth(p.getHealth() + 20);
-    }
-    if (p.getHealth() > 100)
-    {
-        p.setHealth(100);
-    }
-}
-
-void leechMonster(Player p, Monster m)
-{
-    if (p.getDeff() != true)
-    {
-        p.setHealth(p.getHealth() - m.getAttack() / 2);
-        if (m.getHealth() < 100)
-        {
-            m.setHealth(m.getHealth() + m.getAttack()*30/100);
-        }
-        if (m.getHealth() > 100)
-        {
-            m.setHealth(100);
-        }
-    }
-    else
-    {
-        cout << "Enemy has deffence on" << endl;
-        p.setDeff(false);
-    }
-}
-
-void leechPlayerVsPlayer(Player p1, Player p2){
+void leech(Player &p1, Player &p2){
     if (p1.getDeff() != true)
     {
-        p1.setHealth(p1.getHealth() - p2.getAttack() / 2);
+        p1.setHealth(p1.getHealth() - (p2.getAttack() + p2.getAttack() / 2));
         if (p2.getHealth() < 100)
         {
             p2.setHealth(p2.getHealth() + p2.getAttack()*30/100);
@@ -474,36 +208,34 @@ void leechPlayerVsPlayer(Player p1, Player p2){
     }
 }
 
-void leechPlayerVsMonster(Monster m, Player p){
-    if (m.getDeff() != true)
-    {
-        m.setHealth(m.getHealth() - p.getAttack() / 2);
-        if (p.getHealth() < 100)
-        {
-            p.setHealth(p.getHealth() + p.getAttack()*30/100);
-        }
-        if (p.getHealth() > 100)
-        {
-            p.setHealth(100);
-        }
+void fireBall(Player &p1, Player &p2){
+    int decision;
+
+    srand((unsigned)time(NULL));
+    decision = 1 + (rand() % 20);
+
+    if(p1.getDeff() == true){
+        cout << "Enemy had shield on" << endl;
+        p1.setDeff(false);
     }
-    else
-    {
-        cout << "Enemy has deffence on" << endl;
-        m.setDeff(false);
+    else{
+         p1.setHealth(p1.getHealth() - (p2.getAttack() + p2.getAttack() / 2));
     }
+
+    if(decision % 4 == 0){
+        if(p1.getOnFire() == false){
+            cout << "Enemy has been set on fire" << endl;
+            p1.setOnFire(true);
+        }
+        else cout << "Enemy is already on fire" << endl;
+    }
+    else cout << "Enemy was not set on fire:((" << endl;
 }
 
 // end moves
 
-void TurnPlayerVsMonster(Player &p, Monster &m, int nrCom)
+void TurnPlayerVsMonster(Player &p, Player &m, int nrCom)
 {
-    Moves attackBase, heal, defend, attackSpecial;
-    attackBase.setSp(15);
-    heal.setSp(3);
-    defend.setSp(5);
-    attackSpecial.setSp(4);
-
     switch ((nrCom))
     {
     case 1:
@@ -542,12 +274,6 @@ void TurnPlayerVsMonster(Player &p, Monster &m, int nrCom)
 
 void TurnPlayerVsPlayer(Player &p1, Player &p2, int nrCom)
 {
-    Moves attackBase, heal, defend, attackSpecial;
-    attackBase.setSp(15);
-    heal.setSp(3);
-    defend.setSp(5);
-    attackSpecial.setSp(4);
-
     switch ((nrCom))
     {
     case 1:
@@ -584,14 +310,8 @@ void TurnPlayerVsPlayer(Player &p1, Player &p2, int nrCom)
     }
 }
 
-void TurnMonster(Monster &m, Player &p, int nrCom)
+void TurnMonster(Player &m, Player &p, int nrCom)
 {
-    Moves attackBase, heal, defend, attackSpecial;
-    attackBase.setSp(15);
-    heal.setSp(3);
-    defend.setSp(5);
-    attackSpecial.setSp(4);
-
     switch ((nrCom))
     {
     case 1: // attack base
@@ -628,7 +348,7 @@ void TurnMonster(Monster &m, Player &p, int nrCom)
     }
 }
 
-int gameOnPvE(Player p, Monster m)
+int gameOnPvE(Player p, Player m)
 {
 
     // Scenarios:
@@ -671,10 +391,10 @@ int gameOnPvP(Player p1, Player p2)
 int main()
 {
     Player p1, p2;
-    Monster m1;
     int moveP, moveM, answerNewGame, gameMode, moveP1, moveP2;
     bool newGame = true;
 
+/*
     while (newGame == true)
     {
         cout << "Select game mode: " << endl
@@ -914,20 +634,58 @@ int main()
             newGame = false;
         }
     }
+*/
+    
+    while(p1.getHealth() > 0){
+        
+        int decision;
+        cout << endl << "Move: ";
+        cin >> decision;
 
-    return 0;
+        if(decision == 1){
+            slash(p1, p2);
+        }
+        if(decision == 2){
+            heal(p1);
+        }
+        if(decision == 3){
+            shield(p1);
+            if(p1.getDeff() == true)cout << "Shield on bitch" << endl;
+        }
+        if(decision == 4){
+            MegaSlash(p1, p2);
+        }
+        if(decision == 5){
+             cout << "Strength then: " << p1.getAttack() << endl;
+            buffStrength(p1);
+            cout << "Strength now: " << p1.getAttack() << endl;
+        }
+        if(decision == 6){
+            megaHeal(p1);
+        }
+        if(decision == 7){
+            fog(p1);
+            if(p1.getFog() == true)cout << "Fog on bitch" << endl;
+        }
+        if(decision == 8){
+            confusion(p1);
+            if(p1.getConfusion() == true)cout << "Confusion on bitch" << endl;
+        }
+        if(decision == 9){
+            leech(p1, p2);
+            cout << "P1: " << p1.getHealth() << endl << "P2: " << p2.getHealth() << endl;
+        }
+        if(decision == 10){
+            fireBall(p1, p2);
+        }
+
+        cout << "P1 HP:" << p1.getHealth() << endl;
+    }
+
+    cout << "-------Game Over-------";
+    
 }
-
-// coditions for sp(take the move declarations from turn functions, so u can decrement sp, you have to initialize them at the start of the game);
-// for this you can create 2 more fct, moveMonster and MovePlayer, just to have constructors and getter and setters;
-// use them to construct the sp for the moves and decrement them properly;
-
-// make it able to sellect nr of monsters and players;
-
-// add bufs to attacks and stuff;
-
-// make attack their own fct;
 
 //attacks follow the rule target-attacker
 
-//make fireball with tic dmg for mage;
+//make the fireball continuous dmg work(after queue of moves is empty, check if setOnFire is true and reduce the hp by 2-5 points(randomised))
