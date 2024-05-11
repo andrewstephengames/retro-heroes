@@ -1,9 +1,8 @@
 #include "move.hpp"
 
-Move::Move(int damage, Color color, Sound sound) {
+Move::Move(int damage, Color color) {
     this->damage = damage;
     this->color = color;
-    this->sound = sound;
 }
 
 int Move::getDamage() {
@@ -20,12 +19,4 @@ Color Move::getColor() {
 
 void Move::setColor(Color color) {
     this->color = color;
-}
-
-Sound Move::getSound() {
-    return sound;
-}
-
-void Move::setSound(Sound sound) {
-    this->sound = sound;
 }
