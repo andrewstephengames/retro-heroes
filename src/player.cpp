@@ -1,11 +1,12 @@
 #include "player.hpp"
 
-Player::Player(std::string name, Color color, int health) {
+Player::Player(std::string name, Color color, int health, Texture2D texture) {
     this->name = name;
     this->color = color;
     this->health = health;
     this->pos = pos;
     this->box = box;
+    this->texture = texture;
 }
 
 std::string Player::getName() {
@@ -30,6 +31,8 @@ int Player::getHealth() {
 
 void Player::setHealth(int health) {
     this->health = health;
+    if (health < 0)
+        this->health = 0;
 }
 
 Vector2 Player::getPos() {
@@ -56,4 +59,11 @@ Move Player::useMove () {
     Move lastMove = move.front();
     move.pop();
     return lastMove;
+}
+
+Texture2D Player::getTexture() {
+    return texture;
+}
+void Player::setTexture(Texture2D texture) {
+    this->texture = texture;
 }
