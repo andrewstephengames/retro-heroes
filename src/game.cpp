@@ -225,16 +225,8 @@ void Game::drawMenu() {
             PlaySound (res.menuClick);
             state = Start;
             if (mode == "PvP") {
-                Color c1 = {
-                   static_cast<unsigned char>(GetRandomValue(0, 255)),
-                   static_cast<unsigned char>(GetRandomValue(0, 255)),
-                   static_cast<unsigned char>(GetRandomValue(0, 255)),
-                };
-                Color c2 = {
-                   static_cast<unsigned char>(GetRandomValue(0, 255)),
-                   static_cast<unsigned char>(GetRandomValue(0, 255)),
-                   static_cast<unsigned char>(GetRandomValue(0, 255)),
-                };
+                Color c1 = ColorFromHSV (GetRandomValue (0, 360), 1.0, 1.0);
+                Color c2 = ColorFromHSV (GetRandomValue (0, 360), 1.0, 1.0);
                 p1 = new Player ("Player 1", c1, 100, LoadTexture ("/home/andrew/git/retro-heroes/res/img/player.png"));
                 Image image = LoadImage ("/home/andrew/git/retro-heroes/res/img/player.png");
                 ImageFlipHorizontal(&image);
@@ -379,16 +371,8 @@ void Game::drawGame() {
         if (IsMouseButtonPressed (MOUSE_BUTTON_LEFT)) {
             state = Menu;
             PlaySound (res.menuClick);
-            Color c1 = {
-               static_cast<unsigned char>(GetRandomValue(0, 255)),
-               static_cast<unsigned char>(GetRandomValue(0, 255)),
-               static_cast<unsigned char>(GetRandomValue(0, 255)),
-            };
-            Color c2 = {
-               static_cast<unsigned char>(GetRandomValue(0, 255)),
-               static_cast<unsigned char>(GetRandomValue(0, 255)),
-               static_cast<unsigned char>(GetRandomValue(0, 255)),
-            };
+            Color c1 = ColorFromHSV (GetRandomValue (0, 360), 1.0, 1.0);
+            Color c2 = ColorFromHSV (GetRandomValue (0, 360), 1.0, 1.0);
             p1->setColor(c1);
             p2->setColor(c2);
         }
@@ -529,6 +513,8 @@ void Game::drawGame() {
                 PlaySound(res.healS);
                 p1->addMove (*heal);
                 p1->setHealth(p1->getHealth()-p1->useMove().getDamage());
+                if (p1->getHealth() > 100)
+                    p1->setHealth(100);
                 //DrawTexturePro (p1->getTexture(), (Rectangle){17, 0, 16, 16}, p1->getBox(), {0, 0}, 0, p1->getColor());
                 sprite1 = {17, 0, 16, 16};
                 r1 = p1->getBox();
@@ -629,6 +615,8 @@ void Game::drawGame() {
                 PlaySound(res.healS);
                 p2->addMove(*heal);
                 p2->setHealth(p2->getHealth()-p2->useMove().getDamage());
+                if (p2->getHealth() > 100)
+                    p2->setHealth(100);
                 //DrawTexturePro (p2->getTexture(), (Rectangle){0, 0, 16, 16}, p2->getBox(), {0, 0}, 0, p2->getColor());
                 sprite2 = {0, 0, 16, 16};
                 DrawRectangleLinesEx(p2->getBox(), thick, p2->getColor());
