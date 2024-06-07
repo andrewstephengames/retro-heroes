@@ -38,4 +38,4 @@ The player wins when the other player reaches 0 HP.
 
 You can play the game on <a href="https://andrewstephen.xyz/retro-heroes">my website</a> or you may self-host the game locally using a simple HTTP server such as `python -m http.server` or `XAMMP`.
 
-The game can also be run on native platforms, such as `Windows` and `Linux`, by using the compilation script in the `/src` folder. Currently the script is written for `Arch Linux`, but it could be adapted for other platforms by following the <a href="https://github.com/raysan5/raylib/wiki#development-platforms">Raylib documentation</a>.
+The game can also be run on native platforms, such as `Windows` and `Linux`, by using the <a href="src/co">compilation script</a> provided. Currently the script is written for `Arch Linux`, but it could be adapted for other platforms by following the <a href="https://github.com/raysan5/raylib/wiki#development-platforms">Raylib documentation</a>.
